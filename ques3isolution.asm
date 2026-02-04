@@ -1,0 +1,6 @@
+ORG 0000H
+
+MOV A, #30H
+MOV R6, A
+
+END
