@@ -1,32 +1,70 @@
+//A>B
 ORG 0000H
-MOV A, 50H     
-MOV R0, 51H     
 
-COMPARE_LOOP:
-    JZ CHECK_A_ZERO    
+MOV 50H, #07H   ; A = 7
+MOV 51H, #03H   ; B = 3
 
-    MOV B, R0            
-    JZ CHECK_B_ZERO      
+MOV R0, 50H
+MOV R1, 51H
 
-    DEC A                
-    DEC R0               
-    SJMP COMPARE_LOOP
-CHECK_A_ZERO:
-    MOV A, R0
-    JZ EQUAL_CASE       
-    MOV A, #0FFH          
-    MOV 52H, A
-    SJMP END_PROG
+LOOP1:
+MOV A, R1
+JZ A_GREATER     ; if B = 0 → A > B
 
-CHECK_B_ZERO:
-    MOV A, #01H           
-    MOV 52H, A
-    SJMP END_PROG
+DEC R0
+DEC R1
+SJMP LOOP1
+
+A_GREATER:
+MOV 52H, #01H    ; Store A > B
+END
+
+//A=B
+
+ORG 0000H
+
+MOV 50H, #05H   ; A = 5
+MOV 51H, #05H   ; B = 5
+
+MOV R0, 50H
+MOV R1, 51H
+
+LOOP2:
+MOV A, R0
+JZ CHECK_EQUAL
+
+DEC R0
+DEC R1
+SJMP LOOP2
+
+CHECK_EQUAL:
+MOV A, R1
+JZ EQUAL
+
+EQUAL:
+MOV 52H, #00H    ; Store A = B
+END
 
 
-EQUAL_CASE:
-    MOV A, #00H          
-    MOV 52H, A
+//A<B
 
-END_PROG:
+ORG 0000H
+
+MOV 50H, #02H   ; A = 2
+MOV 51H, #06H   ; B = 6
+
+MOV R0, 50H
+MOV R1, 51H
+
+LOOP3:
+MOV A, R0
+JZ A_LESS        ; if A = 0 → A < B
+
+DEC R0
+DEC R1
+SJMP LOOP3
+
+A_LESS:
+MOV 52H, #0FFH   ; Store A < B
+END
 
